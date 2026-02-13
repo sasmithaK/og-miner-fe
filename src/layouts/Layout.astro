@@ -10,7 +10,7 @@ const { title } = Astro.props;
 <html lang="en" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Metadata Foresight API Documentation" />
+		<meta name="description" content="og-miner API Documentation" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
@@ -18,25 +18,39 @@ const { title } = Astro.props;
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+		<script is:inline>
+			// It's best to inline this in the head to avoid FOUC
+			if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+		</script>
 	</head>
-	<body class="bg-bg text-text font-sans antialiased min-h-screen flex flex-col">
+	<body class="bg-white dark:bg-[#0d1117] text-gray-900 dark:text-gray-300 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-white">
 		<slot />
 	</body>
 </html>
 
 <style is:global>
+	html {
+		background-color: #ffffff;
+	}
+	html.dark {
+		background-color: #0d1117;
+	}
 	/* Custom scrollbar if needed */
 	::-webkit-scrollbar {
 		width: 10px;
 	}
 	::-webkit-scrollbar-track {
-		background: #0d1117;
+		background: #f1f1f1;
 	}
 	::-webkit-scrollbar-thumb {
-		background: #30363d;
+		background: #d1d5db;
 		border-radius: 5px;
 	}
 	::-webkit-scrollbar-thumb:hover {
-		background: #58a6ff;
+		background: #d97706;
 	}
 </style>
