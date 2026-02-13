@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Metadata Foresight | Developer Documentation">
+	<header class="sticky top-0 z-50 bg-card/80 backdrop-blur border-b border-border">
+		<div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+			<div class="font-bold text-xl text-primary flex items-center gap-2">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+				Metadata Foresight
+			</div>
+			<nav class="hidden md:flex gap-6 text-sm font-medium">
+				<a href="#features" class="text-muted hover:text-text transition-colors">Features</a>
+				<a href="#docs" class="text-muted hover:text-text transition-colors">API Reference</a>
+				<a href="#guides" class="text-muted hover:text-text transition-colors">Guides</a>
+				<a href="https://rapidapi.com/" target="_blank" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">Get API Key</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="flex-1 max-w-5xl mx-auto px-6 py-12 w-full">
+		<section class="text-center py-16 border-b border-border mb-12">
+			<h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+				The Universal Metadata API
+			</h1>
+			<p class="text-xl text-muted max-w-2xl mx-auto leading-relaxed">
+				Extract OpenGraph, JSON-LD, and oEmbed from any URL. <br/>
+				Handles redirects, SPAs, and bot protection automatically.
+			</p>
+		</section>
+
+		<section id="features" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+			{[
+				{ icon: "⚡", title: "High Performance", desc: "Powered by FastAPI and Redis caching for sub-millisecond response times." },
+				{ icon: "🤖", title: "Headless Browser", desc: "Built-in Playwright support to render JavaScript-heavy sites like Instagram." },
+				{ icon: "🛡️", title: "Enterprise Ready", desc: "Includes SSRF protection, rate limiting, and User-Agent rotation out of the box." },
+				{ icon: "📦", title: "Rich Data", desc: "Extracts more than just title/image. Get JSON-LD schemas, Favicons, and Author data." }
+			].map(feature => (
+				<div class="bg-card border border-border rounded-lg p-6 hover:border-primary transition-colors group">
+					<div class="text-2xl mb-4">{feature.icon}</div>
+					<h3 class="font-semibold text-lg mb-2 text-text group-hover:text-primary transition-colors">{feature.title}</h3>
+					<p class="text-sm text-muted">{feature.desc}</p>
+				</div>
+			))}
+		</section>
+
+		<section id="docs" class="mb-20">
+			<h2 class="text-3xl font-bold mb-6">API Reference</h2>
+			
+			<div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mb-8 text-blue-200 flex items-start gap-3">
+				<span>ℹ️</span>
+				<div>
+					<strong>Base URL:</strong> <code class="bg-black/30 px-2 py-1 rounded">https://metadata-foresight.p.rapidapi.com/</code>
+				</div>
+			</div>
+
+			<div class="mb-12">
+				<h3 class="text-2xl font-semibold mb-4 flex items-center gap-3">
+					<span class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">POST</span>
+					<span class="font-mono text-lg">/v1/extract</span>
+				</h3>
+				<p class="text-muted mb-6">Main endpoint to scrape and parse a URL.</p>
+
+				<!-- Code Tabs -->
+				<div class="border border-border rounded-lg overflow-hidden bg-card mb-8">
+					<div class="flex border-b border-border bg-black/20">
+						<button class="px-6 py-3 text-sm font-medium text-primary border-b-2 border-primary">cURL</button>
+						<button class="px-6 py-3 text-sm font-medium text-muted hover:text-text">Python</button>
+						<button class="px-6 py-3 text-sm font-medium text-muted hover:text-text">JavaScript</button>
+					</div>
+					<div class="p-6 overflow-x-auto bg-[#0d1117]">
+<pre class="text-sm font-mono text-gray-300">curl -X POST "https://metadata-foresight.p.rapidapi.com/v1/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Key: YOUR_RAPIDAPI_KEY" \
+     -H "X-RapidAPI-Host: metadata-foresight.p.rapidapi.com" \
+     -d '{
+           "url": "https://www.github.com",
+           "enable_javascript": false
+         }'</pre>
+					</div>
+				</div>
+
+				<h4 class="text-lg font-semibold mb-4">Parameters</h4>
+				<div class="overflow-x-auto border border-border rounded-lg">
+					<table class="w-full text-left text-sm">
+						<thead class="bg-card border-b border-border text-text">
+							<tr>
+								<th class="p-4 font-medium">Parameter</th>
+								<th class="p-4 font-medium">Type</th>
+								<th class="p-4 font-medium">Default</th>
+								<th class="p-4 font-medium">Description</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-border">
+							{[
+								{ name: "url", type: "string", default: "-", desc: "The target URL to scrape (Required)." },
+								{ name: "force_refresh", type: "boolean", default: "false", desc: "Skip the cache and fetch fresh data." },
+								{ name: "enable_javascript", type: "boolean", default: "false", desc: "Use a headless browser (Playwright) to render the page." }
+							].map(row => (
+								<tr class="hover:bg-white/5">
+									<td class="p-4 font-mono text-primary font-semibold">{row.name}</td>
+									<td class="p-4 text-muted">{row.type}</td>
+									<td class="p-4 text-muted">{row.default}</td>
+									<td class="p-4 text-muted">{row.desc}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="mb-12">
+				<h4 class="text-lg font-semibold mb-4">Response Structure</h4>
+				<p class="text-muted mb-4">Returns a JSON object split into <code>meta</code> (request info) and <code>data</code> (extracted content).</p>
+				
+				<div class="border border-border rounded-lg bg-[#0d1117] p-6 overflow-x-auto mb-6">
+<pre class="text-sm font-mono text-blue-300">{
+  <span class="text-green-400">"meta"</span>: {
+    <span class="text-green-400">"url"</span>: <span class="text-blue-300">"https://github.com"</span>,
+    <span class="text-green-400">"domain"</span>: <span class="text-blue-300">"github.com"</span>,
+    <span class="text-green-400">"latency_ms"</span>: <span class="text-blue-200">245.5</span>
+  },
+  <span class="text-green-400">"data"</span>: {
+    <span class="text-green-400">"title"</span>: <span class="text-blue-300">"GitHub: Let's build from here"</span>,
+    <span class="text-green-400">"description"</span>: <span class="text-blue-300">"GitHub is where over 100 million developers..."</span>,
+    <span class="text-green-400">"image"</span>: <span class="text-blue-300">"https://github.githubassets.com/..."</span>,
+    <span class="text-green-400">"favicon"</span>: <span class="text-blue-300">"https://github.com/favicon.ico"</span>,
+    <span class="text-green-400">"json_ld"</span>: [ ... ]
+  }
+}</pre>
+				</div>
+			</div>
+		</section>
+
+		<section id="contact" class="py-12 border-t border-border">
+			<h2 class="text-2xl font-bold mb-2 text-center">Contact & Support</h2>
+			<p class="text-muted text-center mb-8">Need a custom enterprise plan or found a bug? Reach out to us.</p>
+			
+			<div class="flex flex-wrap justify-center gap-6">
+				{[
+					{ label: "Email", val: "support@metadata-foresight.com", link: "mailto:support@metadata-foresight.com", icon: "✉️" },
+					{ label: "GitHub", val: "Report Issues", link: "https://github.com", icon: "🐙" },
+					{ label: "LinkedIn", val: "Connect", link: "https://linkedin.com", icon: "💼" }
+				].map(item => (
+					<a href={item.link} target="_blank" class="flex flex-col items-center bg-card border border-border rounded-lg p-6 w-48 hover:border-primary hover:-translate-y-1 transition-all group no-underline">
+						<span class="text-2xl mb-2">{item.icon}</span>
+						<span class="font-semibold text-text group-hover:text-primary">{item.label}</span>
+						<span class="text-xs text-muted mt-1">{item.val}</span>
+					</a>
+				))}
+			</div>
+		</section>
+	</main>
+
+	<footer class="border-t border-border py-8 text-center text-sm text-muted bg-card">
+		<p>&copy; {new Date().getFullYear()} Metadata Foresight. Documentation Version 1.0</p>
+	</footer>
+</Layout>

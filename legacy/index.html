@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metadata Foresight | Developer Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                </path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            Metadata Foresight
+        </div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#docs">API Reference</a>
+            <a href="#guides">Guides</a>
+            <a href="https://rapidapi.com/" target="_blank" class="cta-btn">Get API Key</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>The Universal Metadata API</h1>
+            <p>Extract OpenGraph, JSON-LD, and oEmbed from any URL. <br>Handles redirects, SPAs, and bot protection
+                automatically.</p>
+        </section>
+
+        <section id="features" class="features">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">High Performance</div>
+                <div class="feature-desc">Powered by FastAPI and Redis caching for sub-millisecond response times on
+                    repeat hits.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">Headless Browser</div>
+                <div class="feature-desc">Built-in Playwright support to render JavaScript-heavy sites like Instagram or
+                    React apps.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">Enterprise Ready</div>
+                <div class="feature-desc">Includes SSRF protection, rate limiting, and User-Agent rotation out of the
+                    box.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <div class="feature-title">Rich Data</div>
+                <div class="feature-desc">Extracts more than just title/image. Get JSON-LD schemas, Favicons, and Author
+                    data.</div>
+            </div>
+        </section>
+
+        <section id="docs" class="docs-section">
+            <h2>API Reference</h2>
+            <div class="alert alert-info">
+                <span>ℹ️</span>
+                <span><strong>Base URL:</strong> <code>https://metadata-foresight.p.rapidapi.com/</code></span>
+            </div>
+
+            <h3>Extract Metadata</h3>
+            <div class="endpoint">
+                <span class="method">POST</span>
+                <span class="url">/v1/extract</span>
+            </div>
+
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Main endpoint to scrape and parse a URL.</p>
+
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('curl')">cURL</button>
+                    <button class="tab" onclick="switchTab('python')">Python</button>
+                    <button class="tab" onclick="switchTab('js')">JavaScript</button>
+                </div>
+
+                <div id="code-curl" class="code-block">
+                    <pre style="color: #c9d1d9">curl -X POST "https://metadata-foresight.p.rapidapi.com/v1/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Key: YOUR_RAPIDAPI_KEY" \
+     -H "X-RapidAPI-Host: metadata-foresight.p.rapidapi.com" \
+     -d '{
+           "url": "https://www.github.com",
+           "enable_javascript": false
+         }'</pre>
+                </div>
+
+                <div id="code-python" class="code-block" style="display: none;">
+                    <pre style="color: #c9d1d9">import requests
+
+url = "https://metadata-foresight.p.rapidapi.com/v1/extract"
+payload = {
+    "url": "https://www.github.com",
+    "enable_javascript": True
+}
+headers = {
+    "Content-Type": "application/json",
+    "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",
+    "X-RapidAPI-Host": "metadata-foresight.p.rapidapi.com"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())</pre>
+                </div>
+
+                <div id="code-js" class="code-block" style="display: none;">
+                    <pre style="color: #c9d1d9">const response = await fetch("https://metadata-foresight.p.rapidapi.com/v1/extract", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",
+        "X-RapidAPI-Host": "metadata-foresight.p.rapidapi.com"
+    },
+    body: JSON.stringify({
+        url: "https://www.github.com",
+        enable_javascript: true
+    })
+});
+
+const data = await response.json();
+console.log(data);</pre>
+                </div>
+            </div>
+
+            <h3>Parameters</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param">url</td>
+                        <td>string</td>
+                        <td>-</td>
+                        <td>The target URL to scrape (Required).</td>
+                    </tr>
+                    <tr>
+                        <td class="param">force_refresh</td>
+                        <td>bool</td>
+                        <td>false</td>
+                        <td>Skip the cache and fetch fresh data.</td>
+                    </tr>
+                    <tr>
+                        <td class="param">enable_javascript</td>
+                        <td>bool</td>
+                        <td>false</td>
+                        <td>Use a headless browser (Playwright) to render the page. Useful for SPAs.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Response Structure</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">The API returns a JSON object split into
+                <code>meta</code> (request info) and <code>data</code> (extracted content).</p>
+
+            <div class="code-block">
+                <pre style="color: #a5d6ff">{
+  <span style="color: #7ee787">"meta"</span>: {
+    <span style="color: #7ee787">"url"</span>: <span style="color: #a5d6ff">"https://github.com"</span>,
+    <span style="color: #7ee787">"domain"</span>: <span style="color: #a5d6ff">"github.com"</span>,
+    <span style="color: #7ee787">"latency_ms"</span>: <span style="color: #79c0ff">245.5</span>
+  },
+  <span style="color: #7ee787">"data"</span>: {
+    <span style="color: #7ee787">"title"</span>: <span style="color: #a5d6ff">"GitHub: Let's build from here"</span>,
+    <span style="color: #7ee787">"description"</span>: <span style="color: #a5d6ff">"GitHub is where over 100 million developers shape the future of software..."</span>,
+    <span style="color: #7ee787">"image"</span>: <span style="color: #a5d6ff">"https://github.githubassets.com/images/modules/site/social-cards/github-social.png"</span>,
+    <span style="color: #7ee787">"favicon"</span>: <span style="color: #a5d6ff">"https://github.com/favicon.ico"</span>,
+    <span style="color: #7ee787">"site_name"</span>: <span style="color: #a5d6ff">"GitHub"</span>,
+    <span style="color: #7ee787">"oembed"</span>: { ... },
+    <span style="color: #7ee787">"json_ld"</span>: [ ... ]
+  }
+}</pre>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param">meta.latency_ms</td>
+                        <td>Time taken to fetch and parse (in milliseconds).</td>
+                    </tr>
+                    <tr>
+                        <td class="param">data.title</td>
+                        <td>Best available title (OG > Twitter > HTML Title).</td>
+                    </tr>
+                    <tr>
+                        <td class="param">data.image</td>
+                        <td>Absolute URL to the preview image.</td>
+                    </tr>
+                    <tr>
+                        <td class="param">data.oembed</td>
+                        <td>Rich media data (YouTube video ID, width, height) if available.</td>
+                    </tr>
+                    <tr>
+                        <td class="param">data.json_ld</td>
+                        <td>Structured data (e.g., Recipe, Product, Event) if found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="guides" class="docs-section">
+            <h2>Guides & Use Cases</h2>
+
+            <h3>1. Building a Link Preview Card</h3>
+            <p style="color: var(--text-muted);">Use the API to generate social media style cards for your chat app or
+                forum.</p>
+            <div class="code-block">
+                <pre style="color: #c9d1d9">// Example React Component Logic
+const { data } = await api.extract(url);
+return (
+  &lt;div class="card"&gt;
+    &lt;img src={data.image} /&gt;
+    &lt;h3&gt;{data.title}&lt;/h3&gt;
+    &lt;p&gt;{data.description}&lt;/p&gt;
+    &lt;span&gt;{data.domain}&lt;/span&gt;
+  &lt;/div&gt;
+);</pre>
+            </div>
+
+            <h3>2. Handling Single Page Apps (SPAs)</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Standard scrapers fail on sites like Instagram, TikTok, or dynamic React apps because they return empty
+                HTML.
+                Metadata Foresight solves this with the <code>enable_javascript</code> flag.
+            </p>
+            <div class="alert alert-warning">
+                <span>⚠️</span>
+                <span><strong>Note:</strong> Headless requests take longer (2-5s) and may cost more credits on paid
+                    plans.</span>
+            </div>
+
+            <h3>3. Error Handling</h3>
+            <p style="color: var(--text-muted);">The API returns standard HTTP codes to help you debug.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="param">200</td>
+                        <td>Success. Metadata extracted.</td>
+                    </tr>
+                    <tr>
+                        <td class="param">400</td>
+                        <td>Invalid URL or Bad Request.</td>
+                    </tr>
+                    <tr>
+                        <td class="param">429</td>
+                        <td>Rate limit exceeded. Slow down!</td>
+                    </tr>
+                    <tr>
+                        <td class="param">504</td>
+                        <td>Timeout. The target site is too slow.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contact" class="docs-section">
+            <h2>Contact & Support</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                Need a custom enterprise plan or found a bug? Reach out to us.
+            </p>
+
+            <div class="features"
+                style="margin-bottom: 0; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <a href="mailto:support@metadata-foresight.com" style="text-decoration: none;">
+                    <div class="feature-card" style="text-align: center;">
+                        <div class="feature-icon">✉️</div>
+                        <div class="feature-title">Email</div>
+                        <div class="feature-desc">support@metadata-foresight.com</div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/yourusername" target="_blank" style="text-decoration: none;">
+                    <div class="feature-card" style="text-align: center;">
+                        <div class="feature-icon">🐙</div>
+                        <div class="feature-title">GitHub</div>
+                        <div class="feature-desc">Report Issues</div>
+                    </div>
+                </a>
+
+                <a href="https://linkedin.com/in/yourusername" target="_blank" style="text-decoration: none;">
+                    <div class="feature-card" style="text-align: center;">
+                        <div class="feature-icon">💼</div>
+                        <div class="feature-title">LinkedIn</div>
+                        <div class="feature-desc">Connect with the Creator</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Metadata Foresight. Documentation Version 1.0</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
