@@ -1,7 +1,7 @@
-# OG Miner Frontend
+# OpenGraph Miner 🌐⛏
 
 Welcome to the frontend documentation for **OG Miner: The OpenGraph Miner**.
-This project is built with [Astro](https://astro.build) and [Tailwind CSS](https://tailwindcss.com).
+OG Miner is a production-ready API for extracting structured metadata and screenshots from any public URL.
 
 ## 🚀 Features
 
@@ -91,4 +91,4 @@ Need a custom enterprise plan or found a bug?
 
 ---
 
-&copy; 2026 OG Miner. Documentation Version 1.0. Built with 🥭 by [sasmithaK](https://github.com/sasmithaK).
+&copy; 2026 OG Miner. Documentation Version 1.0. Built with 🧡 by [sasmithaK](https://github.com/sasmithaK).
