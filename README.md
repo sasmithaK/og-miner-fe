@@ -1,6 +1,6 @@
 # OpenGraph Miner 🌐⛏
 
-Welcome to the frontend documentation for **OG Miner: The OpenGraph Miner**.
+Welcome to documentation for **OG Miner: The OpenGraph Miner**.
 OG Miner is a production-ready API for extracting structured metadata and screenshots from any public URL.
 
 ## 🚀 Features
@@ -12,10 +12,11 @@ OG Miner is a production-ready API for extracting structured metadata and screen
 
 ## 🛠️ Tech Stack
 
--   **Framework**: Astro
--   **Styling**: Tailwind CSS
--   **Icons**: Heroicons / Custom SVG
--   **Theme**: Light/Dark Mode (System preference + Toggle)
+-   **Language**: Python 3.10+
+-   **Framework**: FastAPI
+-   **Browser**: Playwright (Chromium)
+-   **Cache**: Redis
+-   **Task Runner**: Uvicorn
 
 ## 📚 API Reference
 
