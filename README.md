@@ -4,6 +4,8 @@
 
 OG Miner is a high-performance API designed for developers building link previews, social media integrations, and content aggregation tools. Extract rich metadata, screenshots, and visual assets from any URL with a single request.
 
+![OG Miner Hero](public/og-image.png)
+
 ## ⚡ Why OG Miner?
 
 -   **Unmatched Speed**: Powered by Redis caching for sub-millisecond response times.
@@ -11,37 +13,34 @@ OG Miner is a high-performance API designed for developers building link preview
 -   **Smart Extraction**: Handles Single Page Applications (React, Vue) via headless Chrome.
 -   **Anti-Blocking**: Built-in proxy rotation and geo-targeting. [Beta]
 
-## 🚀 Key Capabilities
+## 🚀 Deep Dive: Capabilities
 
-### 1. Rich Metadata
-Instantly retrieve OpenGraph, Twitter Cards, JSON-LD, oEmbed, and Favicons.
+### 1. Rich Metadata Extraction
+The core of OG Miner. It doesn't just parse HTML; it intelligently aggregates data from multiple sources to give you the most complete picture of a URL.
+
+*   **Multi-Source Parsing**: Prioritizes OpenGraph (`og:` tags), falls back to Twitter Cards (`twitter:`), and finally parses standard HTML `<meta>` tags.
+*   **Schema.org & JSON-LD**: Extracts structured data (Product, Article, Recipe) embedded in JSON-LD scripts, crucial for E-commerce and SEO tools.
+*   **oEmbed Discovery**: Automatically discovers and fetches oEmbed data (e.g., YouTube provider details) for rich media embedding.
+
+**Request:**
 ```bash
 curl -X POST "https://og-miner-api.herokuapp.com/v1/extract" \
      -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
      -d '{"url": "https://github.com"}'
 ```
 
-**Response:**
-```json
-{
-  "meta": {
-    "url": "https://github.com",
-    "domain": "github.com",
-    "latency_ms": 245
-  },
-  "data": {
-    "title": "GitHub: Let's build from here",
-    "description": "GitHub is where over 100 million developers shape the future of software...",
-    "image": "https://github.githubassets.com/images/modules/site/social-cards/github-social.png",
-    "favicon": "https://github.com/favicon.ico",
-    "site_name": "GitHub",
-    "oembed": { ... }
-  }
-}
-```
+---
 
 ### 2. Smart Screenshots
-Capture pixel-perfect screenshots of any webpage. customize viewport, full-page mode, and dark/light themes.
+Capture pixel-perfect representations of any webpage.
+
+*   **Full Page Capture**: Automatically scrolls and stitches the entire page, perfect for archiving or auditing.
+*   **Viewport Control**: Simulate mobile devices or specific desktop resolutions (e.g., 1920x1080).
+*   **Dark Mode Simulation**: Forces `prefers-color-scheme: dark` to capture the dark theme of supported websites.
+*   **Lazy Loading Handling**: Waits for network idle state to ensure images and dynamic content are fully loaded before capturing.
+
+**Request:**
 ```json
 // POST /v1/screenshot
 {
@@ -51,20 +50,16 @@ Capture pixel-perfect screenshots of any webpage. customize viewport, full-page 
 }
 ```
 
-**Response:**
-```json
-{
-  "screenshot": "iVBORw0KGgoAAAANSUhEUgAABAAAAAMgCAYAAAC...", // Base64 encoded PNG
-  "meta": {
-    "width": 1280,
-    "height": 4500,
-    "size_kb": 1240
-  }
-}
-```
+---
 
-### 3. Headless Rendering
-Scrape JavaScript-heavy sites (Instagram, TikTok) that standard scrapers miss.
+### 3. Headless Rendering (SPA Support)
+Standard HTTP requests fail on modern React/Vue/Angular apps (SPAs) because the HTML is empty until JavaScript runs.
+
+*   **Real Browser**: Launches a headless Chromium instance via Playwright to execute the page's JavaScript.
+*   **DOM Hydration**: Waits for the "hydration" phase to complete, ensuring the metadata you extract reflects the *actual* content the user sees.
+*   **Resource Blocking**: Intelligently blocks ads, trackers, and media to speed up rendering and reduce bandwidth.
+
+**Request:**
 ```json
 // POST /v1/extract
 {
@@ -73,15 +68,30 @@ Scrape JavaScript-heavy sites (Instagram, TikTok) that standard scrapers miss.
 }
 ```
 
-### 4. Image Resizing & Proxying
-Securely proxy and resize external images to WebP format to reduce bandwidth and improve loading speed.
+---
+
+### 4. Image Proxy & Optimization
+Securely delivery external images to your users without exposing their IP or dealing with mixed-content warnings.
+
+*   **Anonymity**: The API fetches the image, not the user's browser, preventing tracking pixels from third parties.
+*   **Intelligent Resizing**: Define a `width` (e.g., 300px), and the API calculates the height to preserve aspect ratio using high-quality LANCZOS resampling.
+*   **Format Conversion**: Automatically converts heavy PNGs/JPEGs to **WebP**, reducing file size by 30-50% for faster page loads.
+
+**Request:**
 ```
 GET /v1/image?url=https://example.com/huge.png&width=600
 ```
 
-### 5. Batch Processing
-Analyze up to 50 URLs in parallel with a single API call.
+---
 
+### 5. Batch Processing
+High-throughput analysis for bulk operations.
+
+*   **Parallel Execution**: Processes up to 50 URLs concurrently using async/await non-blocking I/O.
+*   **Resiliency**: Individual failures (e.g., one 404 URL) do not fail the entire batch.
+*   **Unified Response**: Returns a dictionary keyed by URL, making it easy to map results back to your source data.
+
+**Request:**
 ```json
 // POST /v1/batch/extract
 {
@@ -89,23 +99,18 @@ Analyze up to 50 URLs in parallel with a single API call.
 }
 ```
 
-**Response:**
-```json
-{
-  "total": 2,
-  "successful": 2,
-  "failed": 0,
-  "results": {
-    "https://google.com": { "status": "success", "data": { "title": "Google", ... } },
-    "https://apple.com": { "status": "success", "data": { "title": "Apple", ... } }
-  }
-}
-```
+---
 
 ## 🌍 Global Infrastructure (Beta)
 
--   **Geo-Targeting**: Simulate requests from US, EU, or Asia to see localized content.
--   **BYOP (Bring Your Own Proxy)**: Integrate your own premium residential proxies for sensitive targets.
+### Geo-Targeting
+Preview content as it appears in specific regions. Useful for testing localization or bypassing geo-blocks.
+*   **Param**: `country: "US"`, `country: "EU"`.
+
+### BYOP (Bring Your Own Proxy)
+Enterprise-grade flexibility.
+*   **Corporate Firewalls**: Access internal tools or staging environments by tunnelling through your own proxy.
+*   **Residential IPs**: Use your premium residential proxy providers (BrightData, Oxylabs) for high-stealth scraping.
 
 ## 🎮 Try it Live
 
@@ -114,4 +119,4 @@ Test the API directly in your browser:
 
 ---
 
-&copy; 2026 OG Miner . Built with 🧡 by [sasmithaK](https://github.com/sasmithaK)
+&copy; 2026 OG Miner. API service built by [sasmithaK](https://github.com/sasmithaK). UI built by [isaraSE](https://github.com/isaraSE).
