@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Miner | Developer Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                </path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            OG Miner
+        </div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#docs">API Reference</a>
+            <a href="#guides">Guides</a>
+            <a href="https://og-miner-fe.vercel.app" target="_blank" class="cta-btn">Live Demo</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>The Ultimate OpenGraph & Metadata API</h1>
+            <p>Extract rich metadata, screenshots, and visual assets from any URL. <br>Handles redirects, SPAs, and bot
+                protection automatically.</p>
+        </section>
+
+        <section id="features" class="features">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Unmatched Speed</div>
+                <div class="feature-desc">Powered by Redis caching for sub-millisecond response times on repeat hits.
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📸</div>
+                <div class="feature-title">Visual Intelligence</div>
+                <div class="feature-desc">Capture full-page screenshots and resize images on the fly.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">Headless Rendering</div>
+                <div class="feature-desc">Built-in Playwright support to render JavaScript-heavy sites like Instagram.
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">Anti-Blocking (Beta)</div>
+                <div class="feature-desc">Smart proxy rotation, Geo-Targeting, and BYOP (Bring Your Own Proxy) support.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <div class="feature-title">Image Proxy</div>
+                <div class="feature-desc">Securely proxy and resize external images to WebP format.</div>
+            </div>
+        </section>
+
+        <section id="docs" class="docs-section">
+            <h2>API Reference</h2>
+            <div class="alert alert-info">
+                <span>ℹ️</span>
+                <span><strong>Base URL:</strong> <code>https://og-miner-api.herokuapp.com/</code></span>
+            </div>
+
+            <!-- Extract Metadata -->
+            <h3>1. Extract Metadata</h3>
+            <div class="endpoint">
+                <span class="method">POST</span>
+                <span class="url">/v1/extract</span>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Main endpoint to scrape and parse a URL.</p>
+
+            <div class="code-block">
+                <pre style="color: #c9d1d9">curl -X POST "https://og-miner-api.herokuapp.com/v1/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
+     -d '{
+           "url": "https://github.com",
+           "enable_javascript": false,
+           "force_refresh": false
+         }'</pre>
+            </div>
+            
+            <h4>Example Response (200 OK)</h4>
+            <div class="code-block">
+<pre style="color: #a5d6ff">{
+  "meta": {
+    "url": "https://github.com",
+    "domain": "github.com",
+    "latency_ms": 245
+  },
+  "data": {
+    "title": "GitHub: Let's build from here",
+    "description": "GitHub is where over 100 million developers shape the future of software...",
+    "image": "https://github.githubassets.com/images/modules/site/social-cards/github-social.png",
+    "favicon": "https://github.com/favicon.ico",
+    "site_name": "GitHub",
+    "oembed": { ... }
+  }
+}</pre>
+            </div>
+
+            <!-- Screenshot -->
+            <h3>2. Take Screenshot</h3>
+            <div class="endpoint">
+                <span class="method">POST</span>
+                <span class="url">/v1/screenshot</span>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Capture pixel-perfect screenshots.</p>
+
+            <div class="code-block">
+                <pre style="color: #c9d1d9">curl -X POST "https://og-miner-api.herokuapp.com/v1/screenshot" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
+     -d '{
+           "url": "https://stripe.com",
+           "full_page": true,
+           "dark_mode": true
+         }'</pre>
+            </div>
+
+            <h4>Example Response (200 OK)</h4>
+            <div class="code-block">
+<pre style="color: #a5d6ff">{
+  "screenshot": "iVBORw0KGgoAAAANSUhEUgAABAAAAAMgCAYAAAC...", // Base64 encoded PNG
+  "meta": {
+    "width": 1280,
+    "height": 4500,
+    "size_kb": 1240
+  }
+}</pre>
+            </div>
+
+            <!-- Batch -->
+            <h3>3. Batch Processing</h3>
+            <div class="endpoint">
+                <span class="method">POST</span>
+                <span class="url">/v1/batch/extract</span>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Process up to 50 URLs in parallel.</p>
+
+            <div class="code-block">
+                <pre style="color: #c9d1d9">curl -X POST "https://og-miner-api.herokuapp.com/v1/batch/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
+     -d '{
+           "urls": ["https://google.com", "https://apple.com"]
+         }'</pre>
+            </div>
+
+            <h4>Example Response (200 OK)</h4>
+            <div class="code-block">
+<pre style="color: #a5d6ff">{
+  "total": 2,
+  "successful": 2,
+  "failed": 0,
+  "results": {
+    "https://google.com": { "status": "success", "data": { "title": "Google", ... } },
+    "https://apple.com": { "status": "success", "data": { "title": "Apple", ... } }
+  }
+}</pre>
+            </div>
+
+            <!-- Image Proxy -->
+            <h3>4. Image Proxy</h3>
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <span class="url">/v1/image</span>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Resize and cache images.</p>
+
+            <div class="code-block">
+                <pre
+                    style="color: #c9d1d9">curl "https://og-miner-api.herokuapp.com/v1/image?url=https://example.com/img.png&width=300"</pre>
+            </div>
+
+            <h3>5. Error Codes</h3>
+            <ul style="list-style: none; padding: 0; color: var(--text-muted);">
+                <li><strong>200 OK</strong>: Success.</li>
+                <li><strong>400 Bad Request</strong>: Invalid URL or parameters. (Check 'code': 'invalid_request')</li>
+                <li><strong>403 Forbidden</strong>: Invalid API Key/Secret.</li>
+                <li><strong>429 Too Many Requests</strong>: Rate limit exceeded.</li>
+                <li><strong>502 Bad Gateway</strong>: Upstream connection failure. (Check 'code': 'connection_error')</li>
+                <li><strong>504 Gateway Timeout</strong>: Upstream timeout. (Check 'code': 'timeout')</li>
+            </ul>
+        </section>
+
+        <section id="guides" class="docs-section">
+            <h2>Guides & Use Cases</h2>
+
+            <h3>Handling Single Page Apps (SPAs)</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Standard scrapers fail on sites like Instagram or TikTok.
+                OG Miner solves this with the <code>enable_javascript</code> flag.
+            </p>
+            <div class="alert alert-warning">
+                <span>⚠️</span>
+                <span><strong>Note:</strong> Headless requests take longer (2-5s).</span>
+            </div>
+
+            <h3>Geo-Targeting (Beta)</h3>
+            <p style="color: var(--text-muted);">
+                Preview how content looks from different regions by using the <code>country</code> parameter (e.g.,
+                "US", "EU").
+            </p>
+            <div class="code-block">
+                <pre style="color: #c9d1d9">curl -X POST "https://og-miner-api.herokuapp.com/v1/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
+     -d '{
+           "url": "https://netflix.com",
+           "country": "US"
+         }'</pre>
+            </div>
+
+            <h3>Bring Your Own Proxy (BYOP) (Beta)</h3>
+            <p style="color: var(--text-muted);">
+                Need to access a site behind a corporate firewall or use a specific residential IP? 
+                Pass your proxy URL in the <code>proxy</code> field.
+            </p>
+            <div class="code-block">
+                <pre style="color: #c9d1d9">curl -X POST "https://og-miner-api.herokuapp.com/v1/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
+     -d '{
+           "url": "https://target-site.com",
+           "proxy": "http://user:pass@residential-proxy.com:8000"
+         }'</pre>
+            </div>
+
+            <h3>Authenticated Scraping</h3>
+            <p style="color: var(--text-muted);">
+                Scrape content behind a login wall by passing session cookies in the <code>cookies</code> object.
+            </p>
+            <div class="code-block">
+                <pre style="color: #c9d1d9">curl -X POST "https://og-miner-api.herokuapp.com/v1/extract" \
+     -H "Content-Type: application/json" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY" \
+     -d '{
+           "url": "https://linkedin.com/in/sasmithakg",
+           "cookies": { "li_at": "AQED..." }
+         }'</pre>
+            </div>
+        </section>
+
+        <section id="contact" class="docs-section">
+            <h2>Contact & Support</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                Need help? Reach out to us.
+            </p>
+
+            <div class="features"
+                style="margin-bottom: 0; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <a href="https://github.com/sasmithaK" target="_blank" style="text-decoration: none;">
+                    <div class="feature-card" style="text-align: center;">
+                        <div class="feature-icon">🐙</div>
+                        <div class="feature-title">GitHub</div>
+                        <div class="feature-desc">Report Issues</div>
+                    </div>
+                </a>
+                <a href="https://www.linkedin.com/in/sasmithakg/" target="_blank" style="text-decoration: none;">
+                    <div class="feature-card" style="text-align: center;">
+                        <div class="feature-icon">📧</div>
+                        <div class="feature-title">Linkedin</div>
+                        <div class="feature-desc">Contact the developer</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 OG Miner. Built with 🧡 by sasmithaK.</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,95 +1,117 @@
-# OpenGraph Miner 🌐⛏
+# OG Miner 🌐⛏
 
-Welcome to documentation for **OG Miner: The OpenGraph Miner**.
-OG Miner is a production-ready API for extracting structured metadata and screenshots from any public URL.
+**The Ultimate OpenGraph & Metadata Extraction API.**
 
-## 🚀 Features
+OG Miner is a high-performance API designed for developers building link previews, social media integrations, and content aggregation tools. Extract rich metadata, screenshots, and visual assets from any URL with a single request.
 
--   **High Performance**: Powered by FastAPI and Redis caching for sub-millisecond response times.
--   **Headless Browser Support**: Built-in Playwright support to render JavaScript-heavy sites (SPAs).
--   **Enterprise Ready**: Includes SSRF protection, rate limiting, and User-Agent rotation.
--   **Rich Data Extraction**: Extracts OpenGraph, Twitter Cards, JSON-LD schemas, Favicons, and Author data.
+## ⚡ Why OG Miner?
 
-## 🛠️ Tech Stack
+-   **Unmatched Speed**: Powered by Redis caching for sub-millisecond response times.
+-   **Visual Intelligence**: Capture full-page screenshots and resize images on the fly.
+-   **Smart Extraction**: Handles Single Page Applications (React, Vue) via headless Chrome.
+-   **Anti-Blocking**: Built-in proxy rotation and geo-targeting. [Beta]
 
--   **Language**: Python 3.10+
--   **Framework**: FastAPI
--   **Browser**: Playwright (Chromium)
--   **Cache**: Redis
--   **Task Runner**: Uvicorn
+## 🚀 Key Capabilities
 
-## 📚 API Reference
-
-**Base URL:** `https://og-miner.p.rapidapi.com/`
-
-### `POST /v1/extract`
-
-Main endpoint to scrape and parse a URL.
-
-#### Parameters
-
-| Parameter | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `url` | string | - | **Required.** The target URL to scrape. |
-| `force_refresh` | bool | `false` | Skip the cache and fetch fresh data. |
-| `enable_javascript` | bool | `false` | Use a headless browser (Playwright) to render the page. Useful for SPAs. |
-
-#### Example Request
-
+### 1. Rich Metadata
+Instantly retrieve OpenGraph, Twitter Cards, JSON-LD, oEmbed, and Favicons.
 ```bash
-curl -X POST "https://og-miner.p.rapidapi.com/v1/extract" \
+curl -X POST "https://og-miner-api.herokuapp.com/v1/extract" \
      -H "Content-Type: application/json" \
-     -H "X-RapidAPI-Key: YOUR_RAPIDAPI_KEY" \
-     -H "X-RapidAPI-Host: og-miner.p.rapidapi.com" \
-     -d '{
-           "url": "https://www.github.com",
-           "enable_javascript": false
-         }'
+     -d '{"url": "https://github.com"}'
 ```
 
-#### Response Structure
-
+**Response:**
 ```json
 {
   "meta": {
     "url": "https://github.com",
     "domain": "github.com",
-    "latency_ms": 245.5
+    "latency_ms": 245
   },
   "data": {
     "title": "GitHub: Let's build from here",
-    "description": "...",
-    "image": "https://github.githubassets.com/...",
+    "description": "GitHub is where over 100 million developers shape the future of software...",
+    "image": "https://github.githubassets.com/images/modules/site/social-cards/github-social.png",
     "favicon": "https://github.com/favicon.ico",
     "site_name": "GitHub",
-    "oembed": { ... },
-    "json_ld": [ ... ]
+    "oembed": { ... }
   }
 }
 ```
 
-## 📖 Guides & Use Cases
+### 2. Smart Screenshots
+Capture pixel-perfect screenshots of any webpage. customize viewport, full-page mode, and dark/light themes.
+```json
+// POST /v1/screenshot
+{
+  "url": "https://stripe.com",
+  "full_page": true,
+  "dark_mode": true
+}
+```
 
-### 1. Building a Link Preview Card
-Use the API to generate social media style cards for your chat app or forum.
+**Response:**
+```json
+{
+  "screenshot": "iVBORw0KGgoAAAANSUhEUgAABAAAAAMgCAYAAAC...", // Base64 encoded PNG
+  "meta": {
+    "width": 1280,
+    "height": 4500,
+    "size_kb": 1240
+  }
+}
+```
 
-### 2. Handling Single Page Apps (SPAs)
-Standard scrapers fail on sites like Instagram or dynamic React apps. Use `enable_javascript: true` to handle these.
-*Note: Headless requests take longer (2-5s).*
+### 3. Headless Rendering
+Scrape JavaScript-heavy sites (Instagram, TikTok) that standard scrapers miss.
+```json
+// POST /v1/extract
+{
+  "url": "https://www.instagram.com/p/...",
+  "enable_javascript": true
+}
+```
 
-### 3. Error Codes
--   **200**: Success.
--   **400**: Invalid URL.
--   **429**: Rate limit exceeded.
--   **504**: Timeout.
+### 4. Image Resizing & Proxying
+Securely proxy and resize external images to WebP format to reduce bandwidth and improve loading speed.
+```
+GET /v1/image?url=https://example.com/huge.png&width=600
+```
 
-## 🤝 Contact & Support
+### 5. Batch Processing
+Analyze up to 50 URLs in parallel with a single API call.
 
-Need a custom enterprise plan or found a bug?
+```json
+// POST /v1/batch/extract
+{
+  "urls": ["https://google.com", "https://apple.com"]
+}
+```
 
--   **GitHub**: [Report Issues](https://github.com/sasmithaK/og-miner-fe/issues)
--   **LinkedIn**: [Connect with Creator](https://www.linkedin.com/in/sasmithakg/)
+**Response:**
+```json
+{
+  "total": 2,
+  "successful": 2,
+  "failed": 0,
+  "results": {
+    "https://google.com": { "status": "success", "data": { "title": "Google", ... } },
+    "https://apple.com": { "status": "success", "data": { "title": "Apple", ... } }
+  }
+}
+```
+
+## 🌍 Global Infrastructure (Beta)
+
+-   **Geo-Targeting**: Simulate requests from US, EU, or Asia to see localized content.
+-   **BYOP (Bring Your Own Proxy)**: Integrate your own premium residential proxies for sensitive targets.
+
+## 🎮 Try it Live
+
+Test the API directly in your browser:
+[**Launch Live Demo**](https://sasmithak.github.io/og-miner-fe/)
 
 ---
 
-&copy; 2026 OG Miner. Documentation Version 1.0. Built with 🧡 by [sasmithaK](https://github.com/sasmithaK).
+&copy; 2026 OG Miner . Built with 🧡 by [sasmithaK](https://github.com/sasmithaK)
