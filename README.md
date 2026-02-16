@@ -4,6 +4,8 @@
 
 OG Miner is a high-performance API designed for developers building link previews, social media integrations, and content aggregation tools. Extract rich metadata, screenshots, and visual assets from any URL with a single request.
 
+[**Learn More**](https://og-miner-fe.vercel.app/)
+
 [**Checkout on RapidAPI**](https://rapidapi.com/kavindugunasena/api/og-miner-metadata-screenshot-api)
 
 [**Swagger Doc**](https://opengraph-api-216d0279de39.herokuapp.com/docs)
@@ -124,3 +126,4 @@ Test the API directly in your browser:
 ---
 
 &copy; 2026 OG Miner. API service built by [sasmithaK](https://github.com/sasmithaK). UI built by [isaraSE](https://github.com/isaraSE).
+
