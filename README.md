@@ -82,8 +82,9 @@ Securely delivery external images to your users without exposing their IP or dea
 *   **Format Conversion**: Automatically converts heavy PNGs/JPEGs to **WebP**, reducing file size by 30-50% for faster page loads.
 
 **Request:**
-```
-GET /v1/image?url=https://example.com/huge.png&width=600
+```bash
+curl -X GET "https://og-miner-api.herokuapp.com/v1/image?url=https://example.com/huge.png&width=600" \
+     -H "X-RapidAPI-Proxy-Secret: YOUR_SECRET_KEY"
 ```
 
 ---
