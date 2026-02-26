@@ -8,7 +8,7 @@ OG Miner is a high-performance API designed for developers building link preview
 
 [**Checkout on RapidAPI**](https://rapidapi.com/kavindugunasena/api/og-miner-metadata-screenshot-api)
 
-[**Swagger Doc**](https://opengraph-api-216d0279de39.herokuapp.com/docs)
+[**OpenAPI Documentation**](https://opengraph-api-216d0279de39.herokuapp.com/docs)
 
 ## ⚡ Why OG Miner?
 
@@ -127,4 +127,5 @@ Test the API directly in your browser:
 ---
 
 &copy; 2026 OG Miner. API service built by [sasmithaK](https://github.com/sasmithaK). UI built by [isaraSE](https://github.com/isaraSE).
+
 
